@@ -1,8 +1,11 @@
 Photogur::Application.routes.draw do
-  resources :pictures
   root :to => 'pictures#index'
   
-end
+
+  resources :pictures do
+    resources :comments
+  #get 'pictures/:picture_id/comments' => 'comments#index', :as => 'comments'
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -59,3 +62,4 @@ end
   #     resources :products
   #   end
 
+end

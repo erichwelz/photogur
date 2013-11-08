@@ -1,8 +1,6 @@
 class PicturesController < ApplicationController
-
   def index
-    @pictures = Picture.all
-  # @comments = Comment.all
+   @most_recent_pictures = Picture.most_recent_five
   end
 
   def show
@@ -10,20 +8,16 @@ class PicturesController < ApplicationController
   end
 
   def new
-    @picture = Picture.new
-  #  @comment = Comment.new
+    @picture = Picture.new(picture_params)
+    if @picture.save
+      redirect_to pictures_url
+    else
+      render :new
+    end
   end
 
   def create
-    # make a new picture with that picture_params returns(the method we're calling)
-    @picture = Picture.new(picture_params)
-    if @picture.save
-      # if the save for the picture was successful, go to index.html.erb 
-      redirect_to pictures_url
-    else
-      # otherwise render the view associated with the action :new (i.e. new.html.erb)
-      render :new
-    end
+    render :text => "Saving a picture. URL: #{params[:url]}, Title: #{params[:title]}, Artist: #{params[:artist]}"
   end
 
   def edit
@@ -44,11 +38,10 @@ class PicturesController < ApplicationController
     @picture = Picture.find(params[:id])
     @picture.destroy
     redirect_to pictures_url
-  end
+  end  
 
   private
   def picture_params
-    params.require(:picture).permit(:artist, :title, :url, :comments)
+    params.require(:picture).permit(:artist, :title, :url)
   end
-
 end

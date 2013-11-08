@@ -1,0 +1,23 @@
+<h1>Pictures</h1>
+<%= link_to "New Picture", "/pictures/new" %>
+
+<h1>Most recent pictures</h1>
+
+  <% @most_recent_pictures.each do |picture| %>
+    <%= picture[:title] %>, <%= picture[:artist] %></p>
+  <%= link_to image_tag(picture.url), "/pictures/#{picture.id}" %>
+
+  <% end %>
+
+<%= "Pictures added less than one hour ago: #{Picture.created_after(1.hour.ago).count}" %><br>
+
+<%= "Pictures added less than one day go: #{Picture.created_after(1.day.ago).count}" %><br>
+
+<p><%= "Total Pictures in Database: #{Picture.count}"%></p>
+<h1>All Pictures</h1>
+<ul>
+<% Picture.created_after(1.year.ago).each do |picture| %>
+  <li><%= picture[:title] %></li>
+
+  <% end %>
+</ul>
